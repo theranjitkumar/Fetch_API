@@ -1,20 +1,93 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
-  <title>fetch promise example</title>
+  <title>Fetch API</title>
+  <style>
+    body{
+      width: 90%;
+      margin: auto;
+    }
+    p{
+      margin: 0px;
+      padding: 0px;
+    }
+  </style>
 </head>
+
 <body>
-<script>
-fetch('https://raw.githubusercontent.com/theranjitkumar/jsonData/master/jsonData.json')
-  .then((res)=>{
-  res.json().then((result)=>{
-    console.log(result)
-  })
-}).catch((err)=>{
-  console.log(err);
-});  
-</script>
+
+  <section>
+    <h3> Fetch API Test </h3>
+    <hr>
+    <form>
+      <label> Title </label> <br>
+      <input type="text" name="title" id="title" /> <br>
+      <label> Body </label> <br>
+      <input type="text" name="body" id="body" /> <br>
+      <input type="button" value="submit" onclick="app.addPost();">
+    </form>
+    <div>
+      <h3> Posts </h3>
+      <hr>
+      <div id="posts"> </div>
+    </div>
+  </section>
+
+  <script>
+    var app = (function () {
+      const url = 'https://jsonplaceholder.typicode.com/posts';
+
+      var getPosts = function () {
+        fetch(url)
+          .then((res) => {
+            res.json().then((result) => {
+              console.log(result)
+              var postsDiv = document.getElementById('posts');
+              var posts = '<h3> Posts: </h3>';
+              result.forEach(post => {
+                posts +=
+                  `
+                <p> <strong> ${post.title} </strong> </p> <br> 
+                <p>${post.body} </p>
+                `
+              });
+              postsDiv.innerHTML = posts;
+            })
+          }).catch((err) => {
+            console.log(err);
+          });
+      }
+
+      var addPost = function () {
+        var data = {
+          title: document.getElementById('title').value || 'Test Title',
+          body: document.getElementById('body').value || 'Test body ....'
+        };
+
+        fetch(url, {
+            method: 'POST', // or 'PUT'
+            body: JSON.stringify(data), // data can be `string` or {object}!
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(res => res.json())
+          .then(response => {
+            console.log(response);
+          })
+          .catch(error => console.error('Error:', error));
+      }
+      /*========RETURN=======*/
+      return {
+        getPosts,
+        addPost
+      }
+    })();
+    /*========on page load=======*/
+    app.getPosts();
+  </script>
 </body>
+
 </html>

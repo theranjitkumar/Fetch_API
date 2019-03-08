@@ -1,6 +1,6 @@
 #  Fetch API
 ####  GET
-      fetch('https://jsonplaceholder.typicode.com/todos')
+      fetch('https://jsonplaceholder.typicode.com/posts')
             .then((res) => {
                 res.json().then((result) => {
                     console.log(result)
@@ -11,13 +11,11 @@
 ####  POST
 
             var data = {
-                "userId": 1,
-                "id": 1,
-                "title": "delectus aut autem",
-                "completed": false
-              };
+              title: 'Test Title',
+              body: 'Test body ....'
+            };
 
-            fetch('https://jsonplaceholder.typicode.com/todos', {
+            fetch('https://jsonplaceholder.typicode.com/posts', {
                 method: 'POST', // or 'PUT'
                 body: JSON.stringify(data), // data can be `string` or {object}!
                 headers:{
